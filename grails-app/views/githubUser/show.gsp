@@ -20,6 +20,8 @@
             <div class="message" role="status">${flash.message}</div>
             </g:if>
             <f:display bean="githubUser" />
+            %{--<a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=${githubUser.username}">Click here</a> to begin!</a>--}%
+            <a href="https://github.com/login/oauth/authorize?client_id=nathandunn">Click here</a> to begin!</a>
             <h3>Users</h3>
             <ul>
                 <g:each in="${this.users}" var="user">
