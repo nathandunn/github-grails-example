@@ -109,10 +109,11 @@ class GithubUserController {
 
     def authenticateUser(GithubUser githubUser){
 
-        GitHub github = GitHub.connect(githubUser.username,githubUser.token1)
+        GitHub github = GitHub.connectUsingOAuth(githubUser.token1)
+//        GitHub github = GitHub.connect("ndunn@me.com",githubUser.token1)
 
 
-        flash.message = "Authenticating user ${githubUser.username} is valid ${github.credentialValid}"
+        flash.message = "Authenticating user ${githubUser.username} using the Oauth valid ${github.credentialValid}"
 
         respond githubUser, view: "show"
     }
