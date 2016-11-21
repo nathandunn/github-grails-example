@@ -1,5 +1,7 @@
 package github.grails.example
 
+import org.kohsuke.github.GitHub
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -107,7 +109,10 @@ class GithubUserController {
 
     def authenticateUser(GithubUser githubUser){
 
-        flash.message = "Authenticating user ${githubUser.username}"
+        GitHub github = GitHub.connect(githubUser.username,githubUser.token1)
+
+
+        flash.message = "Authenticating user ${githubUser.username} is valid ${github.credentialValid}"
 
         respond githubUser, view: "show"
     }
