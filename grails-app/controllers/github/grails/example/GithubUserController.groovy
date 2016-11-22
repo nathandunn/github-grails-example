@@ -197,52 +197,52 @@ class GithubUserController {
         respond view: "index",GithubUser.list(params), model:[githubUserCount: GithubUser.count()]
     }
 
-    def getUserDetails(String accessToken) {
-
-        // TODO:  use the token to acces the API
-        // the final get using the access_token in result
-        // https://developer.github.com/v3/oauth/#3-use-the-access-token-to-access-the-api
-//        curl -H "Authorization: token OAUTH-TOKEN" https://api.github.com/user
-//        postRequest.addHeader("User-Agent", USER_AGENT);
-        // TODO: 1 post to the client to get the acces token
-//        def client = new restclient("https://github.com/login/oauth/access_token")
-        def parameterMap = [
-                client_id: clientToken
-                ,client_secret : clientSecret
-                , code: code
-//                 , redirect_uri: "http://35.164.186.194:8080/"
-        ]
-
-        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-        parameterMap.each {
-            urlParameters.add(new BasicNameValuePair(it.key,it.value))
-        }
-
-        HttpClient httpClient = HttpClientBuilder.create().build();
-        HttpPost postRequest = new HttpPost("https://github.com/login/oauth/access_token")
-        postRequest.addHeader("User-Agent", "TermGenie/1.0");
-//        postRequest.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.5; rv:10.0.1) Gecko/20100101 Firefox/10.0.1 SeaMonkey/2.7.1");
-        postRequest.addHeader("Accept","application/json")
-        postRequest.addHeader("Accept","application/xml")
-
-        println "posting '${urlParameters}'"
-
-        postRequest.setEntity(new UrlEncodedFormEntity(urlParameters));
-
-        HttpResponse response = httpClient.execute(postRequest);
-
-        BufferedReader rd = new BufferedReader(
-                new InputStreamReader(response.getEntity().getContent()));
-
-        StringBuffer result = new StringBuffer();
-        String line = "";
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
-        }
-        def jsonSlurper = new JsonSlurper()
-        JSONObject jsonObject = jsonSlurper.parseText(result.toString()) as JSONObject
-        String accessToken = jsonObject.access_token
-        return accessToken
-
-    }
+//    def getUserDetails(String accessToken) {
+//
+//        // TODO:  use the token to acces the API
+//        // the final get using the access_token in result
+//        // https://developer.github.com/v3/oauth/#3-use-the-access-token-to-access-the-api
+////        curl -H "Authorization: token OAUTH-TOKEN" https://api.github.com/user
+////        postRequest.addHeader("User-Agent", USER_AGENT);
+//        // TODO: 1 post to the client to get the acces token
+////        def client = new restclient("https://github.com/login/oauth/access_token")
+//        def parameterMap = [
+//                client_id: clientToken
+//                ,client_secret : clientSecret
+//                , code: code
+////                 , redirect_uri: "http://35.164.186.194:8080/"
+//        ]
+//
+//        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+//        parameterMap.each {
+//            urlParameters.add(new BasicNameValuePair(it.key,it.value))
+//        }
+//
+//        HttpClient httpClient = HttpClientBuilder.create().build();
+//        HttpPost postRequest = new HttpPost("https://github.com/login/oauth/access_token")
+//        postRequest.addHeader("User-Agent", "TermGenie/1.0");
+////        postRequest.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.5; rv:10.0.1) Gecko/20100101 Firefox/10.0.1 SeaMonkey/2.7.1");
+//        postRequest.addHeader("Accept","application/json")
+//        postRequest.addHeader("Accept","application/xml")
+//
+//        println "posting '${urlParameters}'"
+//
+//        postRequest.setEntity(new UrlEncodedFormEntity(urlParameters));
+//
+//        HttpResponse response = httpClient.execute(postRequest);
+//
+//        BufferedReader rd = new BufferedReader(
+//                new InputStreamReader(response.getEntity().getContent()));
+//
+//        StringBuffer result = new StringBuffer();
+//        String line = "";
+//        while ((line = rd.readLine()) != null) {
+//            result.append(line);
+//        }
+//        def jsonSlurper = new JsonSlurper()
+//        JSONObject jsonObject = jsonSlurper.parseText(result.toString()) as JSONObject
+//        String accessToken = jsonObject.access_token
+//        return accessToken
+//
+//    }
 }
