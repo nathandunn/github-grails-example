@@ -8,7 +8,7 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class GithubUserController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE",githubAuthenticate:"POST"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
