@@ -180,7 +180,7 @@ class GithubUserController {
                 client_id: clientToken
                 ,client_secret : clientSecret
                 , code: code
-//                 , redirect_uri: "http://35.164.186.194:8080/githubUser/"
+                 , redirect_uri: "http://35.164.186.194:8080/githubUser/"
         ] as JSON
 
 
@@ -198,6 +198,7 @@ class GithubUserController {
         postRequest.addHeader("Accept","application/xml")
 
         String jsonObjectString = jsonObject.toString()
+        jsonObjectString.replaceAll("\"","\\\"")
         println "posting '${jsonObjectString}'"
 
         StringEntity input = new StringEntity(jsonObjectString)
