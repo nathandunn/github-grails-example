@@ -214,6 +214,7 @@ class GithubUserController {
 
         println "final result ${result}"
 
+        flash.message = result
 
 
         // TODO:  use the token to acces the API
@@ -224,6 +225,6 @@ class GithubUserController {
 
 //        GitHub.createOrGetAuth(clientToken,clientSecret)
 
-        redirect("/")
+        respond action: "index",GithubUser.list(params), model:[githubUserCount: GithubUser.count()]
     }
 }
