@@ -193,12 +193,12 @@ class GithubUserController {
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost postRequest = new HttpPost("https://github.com/login/oauth/access_token")
 //        postRequest.addHeader("User-Agent", "TermGenie/1.0");
-        postRequest.addHeader("User-Agent", "Mozilla/4.0");
+        postRequest.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.5; rv:10.0.1) Gecko/20100101 Firefox/10.0.1 SeaMonkey/2.7.1");
         postRequest.addHeader("Accept","application/json")
         postRequest.addHeader("Accept","application/xml")
 
         String jsonObjectString = jsonObject.toString()
-        jsonObjectString = jsonObjectString.replaceAll('\"','\\\"')
+//        jsonObjectString = jsonObjectString.replaceAll('\"','\\\"')
         println "posting '${jsonObjectString}'"
 
         StringEntity input = new StringEntity(jsonObjectString)
