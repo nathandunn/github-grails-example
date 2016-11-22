@@ -130,8 +130,8 @@ class GithubUserController {
         def clientToken = grailsApplication.config.getProperty("github.client.token")
         println "client token: '${clientToken}'"
 
-//        redirect(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}&scope=user,user:email")
-        redirect(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}")
+        redirect(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}&scope=user")
+//        redirect(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}")
 
 
 //        URL url = new URL("https://github.com/login/oauth/authorize?client_id=${clientToken}")
@@ -191,7 +191,7 @@ class GithubUserController {
 //        HttpClientBuilder httpCliAentBuilder = new HttpClientBuilder();
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost postRequest = new HttpPost("https://github.com/login/oauth/access_token")
-        postRequest.addHeader("User-Agent", "Java");
+        postRequest.addHeader("User-Agent", "TermGenie/1.0");
 
         postRequest.addHeader("Accept:","application/json")
         postRequest.addHeader("Accept:","application/xml")
