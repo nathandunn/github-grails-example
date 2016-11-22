@@ -225,6 +225,6 @@ class GithubUserController {
 
 //        GitHub.createOrGetAuth(clientToken,clientSecret)
 
-        respond action: "index",GithubUser.list(params), model:[githubUserCount: GithubUser.count()]
+        respond view: "index",GithubUser.list(params), model:[githubUserCount: GithubUser.count()]
     }
 }
