@@ -130,7 +130,8 @@ class GithubUserController {
         def clientToken = grailsApplication.config.getProperty("github.client.token")
         println "client token: '${clientToken}'"
 
-        redirect(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}&scope=user,user:email")
+//        redirect(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}&scope=user,user:email")
+        redirect(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}")
 
 
 //        URL url = new URL("https://github.com/login/oauth/authorize?client_id=${clientToken}")
@@ -171,8 +172,7 @@ class GithubUserController {
         def clientToken = grailsApplication.config.getProperty("github.client.token")
         def clientSecret = grailsApplication.config.getProperty("github.client.secret")
 
-        String url = "https://github.com/login/oauth/access_token?client_token=${clientToken}&client_secret=${clientSecret}&code=${code}"
-
+//        String url = "https://github.com/login/oauth/access_token?client_token=${clientToken}&client_secret=${clientSecret}&code=${code}"
         // https://developer.github.com/v3/oauth/#2-github-redirects-back-to-your-site
         // TODO: 1 post to the client to get the acces token
 //        def client = new restclient("https://github.com/login/oauth/access_token")
