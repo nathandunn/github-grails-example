@@ -57,7 +57,10 @@ dependencies {
 }
 
 bootRun {
-    jvmArgs = ['-Dspring.output.ansi.enabled=always']
+    jvmArgs = [
+            '-Dspring.output.ansi.enabled=always'
+            ,'-Dlocal.config.location=app-config.yml'
+    ]
 }
 
 assets {

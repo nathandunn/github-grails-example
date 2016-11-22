@@ -25,7 +25,7 @@
             <h3>Users</h3>
             <ul>
                 <g:each in="${this.users}" var="user">
-                    <li>${user.login}</li>
+                    <li>${user.login} ${user.id}</li>
                 </g:each>
             </ul>
             <g:form resource="${this.githubUser}" method="DELETE">
