@@ -1,14 +1,12 @@
 package github.grails.example
 
-import grails.converters.JSON
+import grails.transaction.Transactional
 import groovy.json.JsonSlurper
 import org.apache.http.HttpResponse
 import org.apache.http.NameValuePair
 import org.apache.http.client.HttpClient
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods.HttpPost
-import org.apache.http.entity.StringEntity
-import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.http.impl.client.HttpClientBuilder
 import org.apache.http.message.BasicNameValuePair
 import org.grails.web.json.JSONObject
@@ -16,7 +14,6 @@ import org.kohsuke.github.GHAuthorization
 import org.kohsuke.github.GitHub
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class GithubUserController {
@@ -133,7 +130,7 @@ class GithubUserController {
         def clientToken = grailsApplication.config.getProperty("github.client.token")
         println "client token: '${clientToken}'"
 
-        redirect(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}&scope=user")
+        redirect(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}&scope=user:email")
     }
 
     private String getAccessToken(String code){
@@ -190,8 +187,13 @@ class GithubUserController {
 //        def userDetails = getUserDetails(accessToken)
 
 //        String text = new URL("https://github.com/api/v2/json/user/show?access_token=${accessToken}").text
+        URL url = new URL("https://api.github.com/user?access_token=${accessToken}")
+        def jsonObject = (new JsonSlurper()).parse(url) as JSONObject
+        // is authenticated:
+        boolean isAuthenticated = jsonObject.containsKey("email")
 //        flash.message = "User details: " + text
-        flash.message = accessToken
+//        flash.message = userString
+        flash.message = "${jsonObject.login} (${jsonObject.email}) is authenticated: ${isAuthenticated} "
 
         respond view: "index",GithubUser.list(params), model:[githubUserCount: GithubUser.count()]
     }
