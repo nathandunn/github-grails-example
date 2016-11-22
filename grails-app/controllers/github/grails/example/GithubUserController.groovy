@@ -1,5 +1,14 @@
 package github.grails.example
 
+import grails.converters.JSON
+import groovy.json.JsonSlurper
+import org.apache.http.HttpResponse
+import org.apache.http.client.HttpClient
+import org.apache.http.client.methods.HttpPost
+import org.apache.http.entity.StringEntity
+import org.apache.http.impl.client.DefaultHttpClient
+import org.apache.http.impl.client.HttpClientBuilder
+import org.grails.web.json.JSONObject
 import org.kohsuke.github.GHAuthorization
 import org.kohsuke.github.GitHub
 
@@ -167,26 +176,52 @@ class GithubUserController {
         // https://developer.github.com/v3/oauth/#2-github-redirects-back-to-your-site
         // TODO: 1 post to the client to get the acces token
 //        def client = new restclient("https://github.com/login/oauth/access_token")
-        def arguments = [
+         def jsonObject = [
                 client_token : clientToken
                 ,client_secret : clientSecret
                 , code: code
-        ]
-//        def response = client.post(
-////                contentType: 'text/javascript',
-////                path: path,
-//                body: arguments
-//        )
+        ] as JSON
+
+
+//        def jsonSlurper = new JsonSlurper()
+
+//        def jsonObject = jsonSlurper.parse(arguments)
+
+//        DefaultHttpClient httpClient = new DefaultHttpClient();
+//        HttpClientBuilder httpCliAentBuilder = new HttpClientBuilder();
+        HttpClient httpClient = HttpClientBuilder.create().build();
+        HttpPost postRequest = new HttpPost("https://github.com/login/oauth/access_token")
+
+        postRequest.addHeader("Accept","application/json")
+        postRequest.addHeader("Accept","application/xml")
+
+        String jsonObjectString = jsonObject.toString()
+        println "posting '${jsonObjectString}'"
+
+        StringEntity input = new StringEntity(jsonObjectString)
+        postRequest.setEntity(input);
+//        postRequest.addHeader("User-Agent", USER_AGENT);
+        HttpResponse response = httpClient.execute(postRequest);
+
+        BufferedReader rd = new BufferedReader(
+                new InputStreamReader(response.getEntity().getContent()));
+
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
+        }
+
+        println "final result ${result}"
+
+
 
         // TODO:  use the token to acces the API
+        // the final get using the access_token in result
         // https://developer.github.com/v3/oauth/#3-use-the-access-token-to-access-the-api
+//        curl -H "Authorization: token OAUTH-TOKEN" https://api.github.com/user
 
 
-//        withHttp(uri: "http://www.google.com") {
-//            def html = get(path : '/search', query : [q:'Groovy'])
-//            assert html.HEAD.size() == 1
-//            assert html.BODY.size() == 1
-//        }
 //        GitHub.createOrGetAuth(clientToken,clientSecret)
 
         redirect("/")
