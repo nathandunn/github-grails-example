@@ -189,10 +189,9 @@ class GithubUserController {
         String accessToken = getAccessToken(code)
 //        def userDetails = getUserDetails(accessToken)
 
-        String text = new URL("https://github.com/api/v2/json/user/show?access_token=${accessToken}").text
-
-
-        flash.message = "User details: " + text
+//        String text = new URL("https://github.com/api/v2/json/user/show?access_token=${accessToken}").text
+//        flash.message = "User details: " + text
+        flash.message = accessToken
 
         respond view: "index",GithubUser.list(params), model:[githubUserCount: GithubUser.count()]
     }
