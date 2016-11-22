@@ -177,7 +177,7 @@ class GithubUserController {
         // TODO: 1 post to the client to get the acces token
 //        def client = new restclient("https://github.com/login/oauth/access_token")
          def jsonObject = [
-                client_token : clientToken
+                client_id: clientToken
                 ,client_secret : clientSecret
                 , code: code
                  , redirect_uri: "http://35.164.186.194:8080/githubUser/"
