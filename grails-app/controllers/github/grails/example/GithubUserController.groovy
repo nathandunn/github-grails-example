@@ -113,6 +113,8 @@ class GithubUserController {
         println "client token: '${clientToken}'"
 
         redirect(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}")
+
+
 //        URL url = new URL("https://github.com/login/oauth/authorize?client_id=${clientToken}")
 //        url.text
 
@@ -142,5 +144,15 @@ class GithubUserController {
 //        println "users ${users}"
 //
 //        respond githubUser, view: "show",model:[users:users]
+    }
+
+    def githubAuthenticate(){
+        def p = params
+        def r = response
+
+        println "params: ${p}"
+        println "response : ${r}"
+
+        redirect("/")
     }
 }
