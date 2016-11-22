@@ -168,10 +168,7 @@ class GithubUserController {
 //        respond githubUser, view: "show",model:[users:users]
     }
 
-    def githubAuthenticate(){
-        println "attempting to authenticate "
-        def code = params.code
-
+    private String getAccessToken(String code){
         def clientToken = grailsApplication.config.getProperty("github.client.token")
         def clientSecret = grailsApplication.config.getProperty("github.client.secret")
 
@@ -179,7 +176,7 @@ class GithubUserController {
         // https://developer.github.com/v3/oauth/#2-github-redirects-back-to-your-site
         // TODO: 1 post to the client to get the acces token
 //        def client = new restclient("https://github.com/login/oauth/access_token")
-         def parameterMap = [
+        def parameterMap = [
                 client_id: clientToken
                 ,client_secret : clientSecret
                 , code: code
@@ -191,31 +188,17 @@ class GithubUserController {
             urlParameters.add(new BasicNameValuePair(it.key,it.value))
         }
 
-
-
-//        def jsonSlurper = new JsonSlurper()
-
-//        def jsonObject = jsonSlurper.parse(arguments)
-
-//        DefaultHttpClient httpClient = new DefaultHttpClient();
-//        HttpClientBuilder httpCliAentBuilder = new HttpClientBuilder();
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost postRequest = new HttpPost("https://github.com/login/oauth/access_token")
-//        postRequest.addHeader("User-Agent", "TermGenie/1.0");
-        postRequest.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.5; rv:10.0.1) Gecko/20100101 Firefox/10.0.1 SeaMonkey/2.7.1");
+        postRequest.addHeader("User-Agent", "TermGenie/1.0");
+//        postRequest.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.5; rv:10.0.1) Gecko/20100101 Firefox/10.0.1 SeaMonkey/2.7.1");
         postRequest.addHeader("Accept","application/json")
         postRequest.addHeader("Accept","application/xml")
 
-//        String jsonObjectString = jsonObject.toString()
-//        jsonObjectString = jsonObjectString.replaceAll('\"','\\\"')
-//        println "posting '${jsonObjectString}'"
         println "posting '${urlParameters}'"
 
-//        StringEntity input = new StringEntity(jsonObjectString)
-//        postRequest.setEntity(input);
         postRequest.setEntity(new UrlEncodedFormEntity(urlParameters));
 
-//        postRequest.addHeader("User-Agent", USER_AGENT);
         HttpResponse response = httpClient.execute(postRequest);
 
         BufferedReader rd = new BufferedReader(
@@ -226,16 +209,26 @@ class GithubUserController {
         while ((line = rd.readLine()) != null) {
             result.append(line);
         }
+        def jsonSlurper = new JsonSlurper()
+        JSONObject jsonObject = jsonSlurper.parseText(result.toString()) as JSONObject
+        String accessToken = jsonObject.access_token
+        return accessToken
+    }
 
-        println "final result ${result}"
+    def githubAuthenticate(){
+        println "attempting to authenticate "
+        def code = params.code
+        String accessToken = getAccessToken(code)
 
-        flash.message = result
+
+        flash.message = accessToken
 
 
         // TODO:  use the token to acces the API
         // the final get using the access_token in result
         // https://developer.github.com/v3/oauth/#3-use-the-access-token-to-access-the-api
 //        curl -H "Authorization: token OAUTH-TOKEN" https://api.github.com/user
+//        postRequest.addHeader("User-Agent", USER_AGENT);
 
 
 //        GitHub.createOrGetAuth(clientToken,clientSecret)
