@@ -112,7 +112,7 @@ class GithubUserController {
         def clientToken = grailsApplication.config.getProperty("github.client_token")
         println "client token: '${clientToken}'"
 
-        redirect(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}")
+        forward(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}")
 
 
 //        URL url = new URL("https://github.com/login/oauth/authorize?client_id=${clientToken}")
