@@ -113,7 +113,7 @@ class GithubUserController {
         def clientToken = grailsApplication.config.getProperty("github.client.token")
         println "client token: '${clientToken}'"
 
-        redirect(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}")
+        redirect(url:"https://github.com/login/oauth/authorize?client_id=${clientToken}?scope=user,user:email")
 
 
 //        URL url = new URL("https://github.com/login/oauth/authorize?client_id=${clientToken}")
@@ -149,8 +149,12 @@ class GithubUserController {
 
     def githubAuthenticate(){
         println "attempting to authenticate "
-        def p = params
-        def r = response
+        def code = params.code
+
+        def clientToken = grailsApplication.config.getProperty("github.client.token")
+        def clientSecret = grailsApplication.config.getProperty("github.client.secret")
+
+        String url = "https://github.com/login/oauth/access_token?client_token=${clientToken}&client_secret=${clientSecret}&code=${code}"
 
         println "params: ${p}"
         println "response : ${r}"
