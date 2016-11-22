@@ -8,7 +8,7 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class GithubUserController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE",githubAuthenticate:"POST"]
+//    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE",githubAuthenticate:"POST"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -107,6 +107,7 @@ class GithubUserController {
         }
     }
 
+
     def authenticateUser(GithubUser githubUser){
 
         def clientToken = grailsApplication.config.getProperty("github.client.token")
@@ -147,6 +148,7 @@ class GithubUserController {
     }
 
     def githubAuthenticate(){
+        println "attempting to authenticate "
         def p = params
         def r = response
 

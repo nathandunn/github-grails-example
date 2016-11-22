@@ -5,9 +5,9 @@ class GithubUser {
     static constraints = {
     }
 
-    String username
-    String password
-    String token1
-    String token2
+//    String username
+//    String password
+//    String token1
+//    String token2
 
 }

@@ -19,6 +19,7 @@
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
             <f:table collection="${githubUserList}" />
+            <g:link action="authenticateUser">Authenticate</g:link>
 
             <div class="pagination">
                 <g:paginate total="${githubUserCount ?: 0}" />
