@@ -198,7 +198,7 @@ class GithubUserController {
         postRequest.addHeader("Accept","application/xml")
 
         String jsonObjectString = jsonObject.toString()
-        jsonObjectString = jsonObjectString.replaceAll("\"","\\\"")
+        jsonObjectString = jsonObjectString.replaceAll('"','\\"')
         println "posting '${jsonObjectString}'"
 
         StringEntity input = new StringEntity(jsonObjectString)
