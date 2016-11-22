@@ -3,11 +3,14 @@ package github.grails.example
 import grails.converters.JSON
 import groovy.json.JsonSlurper
 import org.apache.http.HttpResponse
+import org.apache.http.NameValuePair
 import org.apache.http.client.HttpClient
+import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.StringEntity
 import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.http.impl.client.HttpClientBuilder
+import org.apache.http.message.BasicNameValuePair
 import org.grails.web.json.JSONObject
 import org.kohsuke.github.GHAuthorization
 import org.kohsuke.github.GitHub
@@ -176,12 +179,18 @@ class GithubUserController {
         // https://developer.github.com/v3/oauth/#2-github-redirects-back-to-your-site
         // TODO: 1 post to the client to get the acces token
 //        def client = new restclient("https://github.com/login/oauth/access_token")
-         def jsonObject = [
+         def parameterMap = [
                 client_id: clientToken
                 ,client_secret : clientSecret
                 , code: code
                  , redirect_uri: "http://35.164.186.194:8080/"
-        ] as JSON
+        ]
+
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        parameterMap.each {
+            urlParameters.add(new BasicNameValuePair(it.key,it.value))
+        }
+
 
 
 //        def jsonSlurper = new JsonSlurper()
@@ -197,12 +206,15 @@ class GithubUserController {
         postRequest.addHeader("Accept","application/json")
         postRequest.addHeader("Accept","application/xml")
 
-        String jsonObjectString = jsonObject.toString()
+//        String jsonObjectString = jsonObject.toString()
 //        jsonObjectString = jsonObjectString.replaceAll('\"','\\\"')
-        println "posting '${jsonObjectString}'"
+//        println "posting '${jsonObjectString}'"
+        println "posting '${urlParameters}'"
 
-        StringEntity input = new StringEntity(jsonObjectString)
-        postRequest.setEntity(input);
+//        StringEntity input = new StringEntity(jsonObjectString)
+//        postRequest.setEntity(input);
+        postRequest.setEntity(new UrlEncodedFormEntity(urlParameters));
+
 //        postRequest.addHeader("User-Agent", USER_AGENT);
         HttpResponse response = httpClient.execute(postRequest);
 
