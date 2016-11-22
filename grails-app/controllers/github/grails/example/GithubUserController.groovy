@@ -1,5 +1,6 @@
 package github.grails.example
 
+import org.kohsuke.github.GHAuthorization
 import org.kohsuke.github.GitHub
 
 import static org.springframework.http.HttpStatus.*
@@ -107,6 +108,13 @@ class GithubUserController {
         }
     }
 
+    def authenticateUser2(){
+        def clientId = grailsApplication.config.getProperty("github.client.token")
+        def clientSecret = grailsApplication.config.getProperty("github.client.secret")
+        GitHub github = GitHub.connect();
+        GHAuthorization authorization = github.createOrGetAuth(clientId,clientSecret,["user"],"test attempt to connect","")
+
+    }
 
     def authenticateUser(GithubUser githubUser){
 
@@ -156,8 +164,30 @@ class GithubUserController {
 
         String url = "https://github.com/login/oauth/access_token?client_token=${clientToken}&client_secret=${clientSecret}&code=${code}"
 
-        println "params: ${p}"
-        println "response : ${r}"
+        // https://developer.github.com/v3/oauth/#2-github-redirects-back-to-your-site
+        // TODO: 1 post to the client to get the acces token
+//        def client = new restclient("https://github.com/login/oauth/access_token")
+        def arguments = [
+                client_token : clientToken
+                ,client_secret : clientSecret
+                , code: code
+        ]
+//        def response = client.post(
+////                contentType: 'text/javascript',
+////                path: path,
+//                body: arguments
+//        )
+
+        // TODO:  use the token to acces the API
+        // https://developer.github.com/v3/oauth/#3-use-the-access-token-to-access-the-api
+
+
+//        withHttp(uri: "http://www.google.com") {
+//            def html = get(path : '/search', query : [q:'Groovy'])
+//            assert html.HEAD.size() == 1
+//            assert html.BODY.size() == 1
+//        }
+//        GitHub.createOrGetAuth(clientToken,clientSecret)
 
         redirect("/")
     }

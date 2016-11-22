@@ -22,7 +22,9 @@ apply plugin:"asset-pipeline"
 
 repositories {
     mavenLocal()
-    maven { url "https://repo.grails.org/grails/core" }
+    maven {
+        url "https://repo.grails.org/grails/core"
+    }
 }
 
 dependencyManagement {
@@ -33,6 +35,7 @@ dependencyManagement {
 }
 
 dependencies {
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
     compile group: 'org.kohsuke', name: 'github-api', version: '1.80'
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
