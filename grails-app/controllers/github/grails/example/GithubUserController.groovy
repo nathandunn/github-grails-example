@@ -192,7 +192,7 @@ class GithubUserController {
         String text = new URL("https://github.com/api/v2/json/user/show?access_token=${accessToken}").text
 
 
-        flash.message = text
+        flash.message = "User details: " + text
 
         respond view: "index",GithubUser.list(params), model:[githubUserCount: GithubUser.count()]
     }
